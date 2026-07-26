@@ -14,8 +14,7 @@ def start(user_input: dict):
     if not cap.isOpened():
         sys.exit("Could Not Open Video")
 
-    video_properties = get_video_properties(cap)
-    frame_drawer = FrameDrawer(video_properties, user_input)
+    frame_drawer = FrameDrawer(user_input)
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -25,6 +24,8 @@ def start(user_input: dict):
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+        frame = cv2.resize(frame, (user_input["width"], user_input["height"]))
+
         frame_drawer.draw_frame(frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -32,17 +33,6 @@ def start(user_input: dict):
 
     cap.release()
 
-def get_video_properties(cap: cv2.VideoCapture) -> dict:
-    if not cap.isOpened():
-        sys.exit("Can Not Get Video Properties If Video Is Not Open")
-
-    video_properties = {}
-
-    video_properties["width"] = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    video_properties["height"] = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    video_properties["fps"] = int(cap.get(cv2.CAP_PROP_FPS))
-    video_properties["frame_count"] = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-    return video_properties
+    return cap
 
     pass

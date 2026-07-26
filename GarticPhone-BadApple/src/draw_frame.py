@@ -3,7 +3,7 @@ import pyautogui
 import sys
 
 class FrameDrawer:
-    def __init__(self, video_properties: dict, user_input: dict):
+    def __init__(self, user_input: dict):
         screenwidth, screenheight = pyautogui.size()
 
         self.screenwidth = screenwidth
