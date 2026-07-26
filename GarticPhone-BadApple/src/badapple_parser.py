@@ -1,11 +1,10 @@
 import cv2
 import sys
-import time
 from .draw_frame import FrameDrawer
 from pathlib import Path
 
-def start(video_path_str: str):
-    video_path = Path(video_path_str)
+def start(user_input: dict):
+    video_path = Path(user_input["video_path"])
 
     if not video_path.exists():
         sys.exit(f"Video Path {video_path} Does Not Exist")
@@ -18,11 +17,6 @@ def start(video_path_str: str):
     video_properties = get_video_properties(cap)
     frame_drawer = FrameDrawer(video_properties)
 
-    fps = video_properties["fps"]
-
-    if fps == 0:
-        fps = 30
-
     print(video_properties["fps"])
 
     while cap.isOpened():
@@ -34,8 +28,6 @@ def start(video_path_str: str):
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         frame_drawer.draw_frame(frame)
-
-        time.sleep(1000 / fps)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
