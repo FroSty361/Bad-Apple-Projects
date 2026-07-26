@@ -1,13 +1,10 @@
 import cv2
 import pyautogui
 import sys
-import time
 
 class FrameDrawer:
     def __init__(self, user_input: dict):
         screenwidth, screenheight = pyautogui.size()
-
-        print(screenwidth, screenheight)
 
         self.screenwidth = screenwidth
         self.screenheight = screenheight
@@ -15,6 +12,8 @@ class FrameDrawer:
         if self.check_margins(user_input):
             self.start_x = user_input["start_x"]
             self.start_y = user_input["start_y"]
+
+        pyautogui.PAUSE = 0.0
 
     def check_margins(self, user_input: dict) -> bool:
         start_x = user_input["start_x"]
@@ -52,19 +51,19 @@ class FrameDrawer:
         ret, thresh = cv2.threshold(frame, 127, 255, cv2.THRESH_BINARY)
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+        contours = [cv2.approxPolyDP(c, 1.5, closed=True) for c in contours]
+
+        self.fill_canvas()
+
         for contour in contours:
-            self.fill_canvas()
-
-            i = 0
-
-            for coord in contour:
+            for i, coord in enumerate(contour):
                 x = coord[0][0] + self.start_x
                 y = coord[0][1] + self.start_y
 
                 if i == 0:
                     pyautogui.moveTo(x, y)
 
-                pyautogui.dragTo(x, y, duration=0.01, button="left")
+                pyautogui.dragTo(x, y, duration=0.5, button="left")
 
                 i = i + 1
 
@@ -78,7 +77,7 @@ class FrameDrawer:
 
         # Drag To Fill Screen
         pyautogui.moveTo(int((self.screenwidth / 2) * 0.7), int((self.screenheight / 2) * 0.58))
-        pyautogui.dragTo(int(self.screenwidth * 0.90), int(self.screenheight * 0.90), duration=1, button="left")
+        pyautogui.dragTo(int(self.screenwidth * 0.90), int(self.screenheight * 0.90), duration=0.5, button="left")
 
         # Click Normal Draw Button
         pyautogui.click(int((self.screenwidth / 2) * 1.7), int((self.screenheight / 2) * 0.75))

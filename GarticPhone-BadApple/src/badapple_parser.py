@@ -19,8 +19,6 @@ def start(user_input: dict):
 
     frame_drawer = FrameDrawer(user_input)
 
-    frame_drawer.fill_canvas()
-
     while cap.isOpened():
         ret, frame = cap.read()
 
@@ -33,11 +31,4 @@ def start(user_input: dict):
 
         frame_drawer.draw_frame(frame)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
     cap.release()
-
-    return cap
-
-    pass
