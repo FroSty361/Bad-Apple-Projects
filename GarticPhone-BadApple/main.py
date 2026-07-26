@@ -17,7 +17,7 @@ def get_user_input() -> dict:
     try:
         width = int(input("Input Width: "))
 
-        height = int(input("Input Width: "))
+        height = int(input("Input Height: "))
     except ValueError:
         sys.exit("Must Be An Integer")
     else:
