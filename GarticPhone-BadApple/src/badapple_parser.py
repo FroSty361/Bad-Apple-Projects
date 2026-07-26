@@ -1,5 +1,6 @@
 import cv2
 import sys
+import time
 from .draw_frame import FrameDrawer
 from pathlib import Path
 
@@ -14,7 +15,11 @@ def start(user_input: dict):
     if not cap.isOpened():
         sys.exit("Could Not Open Video")
 
+    time.sleep(3)
+
     frame_drawer = FrameDrawer(user_input)
+
+    frame_drawer.fill_canvas()
 
     while cap.isOpened():
         ret, frame = cap.read()

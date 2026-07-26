@@ -1,10 +1,13 @@
 import cv2
 import pyautogui
 import sys
+import time
 
 class FrameDrawer:
     def __init__(self, user_input: dict):
         screenwidth, screenheight = pyautogui.size()
+
+        print(screenwidth, screenheight)
 
         self.screenwidth = screenwidth
         self.screenheight = screenheight
@@ -50,5 +53,35 @@ class FrameDrawer:
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         for contour in contours:
+            self.fill_canvas()
+
+            i = 0
+
             for coord in contour:
-                print(coord[0][0], coord[0][1])
+                x = coord[0][0] + self.start_x
+                y = coord[0][1] + self.start_y
+
+                if i == 0:
+                    pyautogui.moveTo(x, y)
+
+                pyautogui.dragTo(x, y, duration=0.01, button="left")
+
+                i = i + 1
+
+    def fill_canvas(self):
+        # Click Rectangle Fill Button
+        pyautogui.click(int((self.screenwidth / 2) * 1.7), int(self.screenheight / 2))
+
+        # Click Button To Make Color White
+        pyautogui.click(int((self.screenwidth / 2) * 0.51), int((self.screenheight / 2) * 0.83))
+
+
+        # Drag To Fill Screen
+        pyautogui.moveTo(int((self.screenwidth / 2) * 0.7), int((self.screenheight / 2) * 0.58))
+        pyautogui.dragTo(int(self.screenwidth * 0.90), int(self.screenheight * 0.90), duration=1, button="left")
+
+        # Click Normal Draw Button
+        pyautogui.click(int((self.screenwidth / 2) * 1.7), int((self.screenheight / 2) * 0.75))
+
+        # Click Button To Make Color Black
+        pyautogui.click(int((self.screenwidth / 2) * 0.51), int((self.screenheight / 2) * 0.73))
