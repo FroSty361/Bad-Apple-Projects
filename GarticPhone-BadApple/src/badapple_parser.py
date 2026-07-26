@@ -15,9 +15,7 @@ def start(user_input: dict):
         sys.exit("Could Not Open Video")
 
     video_properties = get_video_properties(cap)
-    frame_drawer = FrameDrawer(video_properties)
-
-    print(video_properties["fps"])
+    frame_drawer = FrameDrawer(video_properties, user_input)
 
     while cap.isOpened():
         ret, frame = cap.read()
