@@ -1,5 +1,6 @@
-video_path,test.mp4
-width,200
-height,150
-start_x,900
-start_y,500
+video_path,badapplefast.mp4
+width,600
+height,450
+start_x,750
+start_y,330
+draw_speed,0.18

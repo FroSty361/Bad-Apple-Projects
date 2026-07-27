@@ -31,7 +31,7 @@ def get_user_input_csv() -> dict:
 
     user_input = {}
 
-    possible_keys = [ "video_path", "width", "height", "start_x", "start_y" ]
+    possible_keys = [ "video_path", "width", "height", "start_x", "start_y", "draw_speed" ]
 
     for key, value in csv_output.items():
         if key not in possible_keys:
@@ -39,6 +39,19 @@ def get_user_input_csv() -> dict:
 
         if key == "video_path":
             user_input["video_path"] = value
+        elif key == "draw_speed": # For Floats
+            try:
+                draw_speed = float(value)
+            except ValueError:
+                sys.exit(f"{key} Value Must Be A Float")
+            else:
+                if draw_speed < 0.10:
+                    print("Draw Speed Is Less Than 0.10")
+                    print(" Setting Draw Speed to 0.10")
+
+                    draw_speed = 0.10
+
+                user_input["draw_speed"] = draw_speed
         else: # For Integers
             try:
                 user_input[key] = int(value)
@@ -55,9 +68,9 @@ def get_user_input_manual() -> dict:
     user_input["video_path"] = video_path
 
     try:
-        width = int(input("Input Width: "))
+        width = int(input("Integer. Input Width: "))
 
-        height = int(input("Input Height: "))
+        height = int(input("Integer. Input Height: "))
     except ValueError:
         sys.exit("Must Be An Integer")
     else:
@@ -65,14 +78,27 @@ def get_user_input_manual() -> dict:
         user_input["height"] = height
 
     try:
-        start_x = int(input("Start X Position: "))
+        start_x = int(input("Integer. Start X Position: "))
 
-        start_y = int(input("Start Y Position: "))
+        start_y = int(input("Integer. Start Y Position: "))
     except ValueError:
         sys.exit("Must Be An Integer")
     else:
         user_input["start_x"] = start_x
         user_input["start_y"] = start_y
+
+    try:
+        draw_speed = float(input("Float. Input Draw Speed {>= 0.15}: "))
+    except ValueError:
+        sys.exit("Must Be An Float")
+    else:
+        if draw_speed < 0.15:
+            print("Draw Speed Is Less Than 0.10")
+            print(" Setting Draw Speed to 0.15")
+
+            draw_speed = 0.15
+
+        user_input["draw_speed"] = draw_speed
 
     return user_input
 

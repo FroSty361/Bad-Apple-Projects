@@ -13,6 +13,11 @@ class FrameDrawer:
             self.start_x = user_input["start_x"]
             self.start_y = user_input["start_y"]
 
+        self.draw_speed = user_input["draw_speed"]
+
+        if self.draw_speed < 0.15:
+            self.draw_speed = 0.15
+
         pyautogui.PAUSE = 0.0
 
     def check_margins(self, user_input: dict) -> bool:
@@ -63,7 +68,7 @@ class FrameDrawer:
                 if i == 0:
                     pyautogui.moveTo(x, y)
 
-                pyautogui.dragTo(x, y, duration=0.5, button="left")
+                pyautogui.dragTo(x, y, duration=self.draw_speed, button="left")
 
                 i = i + 1
 
@@ -77,7 +82,7 @@ class FrameDrawer:
 
         # Drag To Fill Screen
         pyautogui.moveTo(int((self.screenwidth / 2) * 0.7), int((self.screenheight / 2) * 0.58))
-        pyautogui.dragTo(int(self.screenwidth * 0.90), int(self.screenheight * 0.90), duration=0.5, button="left")
+        pyautogui.dragTo(int(self.screenwidth * 0.90), int(self.screenheight * 0.90), duration=0.20, button="left")
 
         # Click Normal Draw Button
         pyautogui.click(int((self.screenwidth / 2) * 1.7), int((self.screenheight / 2) * 0.75))

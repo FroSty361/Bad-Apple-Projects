@@ -19,6 +19,8 @@ def start(user_input: dict):
 
     frame_drawer = FrameDrawer(user_input)
 
+    i = 0
+
     while cap.isOpened():
         ret, frame = cap.read()
 
@@ -30,5 +32,8 @@ def start(user_input: dict):
         frame = cv2.resize(frame, (user_input["width"], user_input["height"]))
 
         frame_drawer.draw_frame(frame)
+
+        i = i + 1
+        print(f"Frame Number = {i}")
 
     cap.release()
