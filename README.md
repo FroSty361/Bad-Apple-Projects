@@ -31,7 +31,7 @@ This is not limited to animation though; many people have also made their own re
 * Animator: [Anira](https://www.nicovideo.jp/user/10731211) on Nico Nico Douga
 * Length: 3:39
 * FPS: ~ 30
-* [Frame Count](./frames): 6572
+* [Frame Count](./frames.zip): 6572
 
 
 ### More Information Can Be Found On...
