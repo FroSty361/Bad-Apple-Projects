@@ -9,7 +9,7 @@ Table Of Contents
 
 * [Bad Apple!!](#Bad-Apple!!)
 * [Visual Projects](#Visual-Projects)
-* [Visual Projects](#Audio-Projects)
+* [Audio Projects](#Audio-Projects)
 
 # Bad Apple!!
 
@@ -18,14 +18,23 @@ The song itself was released by Alstroemeria Records as part of their Lovelight 
 lyrics and featured the Japanese singer nomico as a vocalist.
 
 One year later, a fan on [Nico Nico Douga](https://www.nicovideo.jp/) uploaded a [video](https://www.nicovideo.jp/watch/nm3601701) of a draft animation that would pair well with the song.
-In 2009, a Nico Nico user named [Anira](https://www.nicovideo.jp/user/10731211) saw the request and animated the now famous music video.
+In 2009, a Nico Nico user named [Anira](https://www.nicovideo.jp/user/10731211) saw the request and animated the now [famous video](https://www.nicovideo.jp/watch/sm8628149).
 
 Because the animation was monochrome, many fans challenged themselves to recreate the video in any way they could.
 This is not limited to animation though; many people have also made their own remixes and covers of the song.
 
 <hr>
 
- ### More Information Can Be Found On...
+### Video Information
+
+* [Nico Nico Douga Release Date](https://www.nicovideo.jp/watch/sm8628149): 2009/10/26
+* Animator: [Anira](https://www.nicovideo.jp/user/10731211) on Nico Nico Douga
+* Length: 3:39
+* FPS: ~ 30
+* [Frame Count](./frames): 6572
+
+
+### More Information Can Be Found On...
 
 * [Touhou Wiki](https://en.touhouwiki.net/wiki/Bad_Apple!!)
 * [Touhou Subreddit](https://www.reddit.com/r/touhou/wiki/memes/badapple/)
