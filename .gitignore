@@ -1,24 +1,14 @@
-# ==========================================
-# IDEs and Editors
-# ==========================================
-
-# Visual Studio Code
 .vscode/
 !.vscode/extensions.json
 *.code-workspace
 
-# JetBrains (PyCharm, IntelliJ, WebStorm, etc.)
 .idea/
 *.iws
 *.iml
 
-# Operating System Files
 .DS_Store
 Thumbs.db
 
-# ==========================================
-# Python (PyCharm / General)
-# ==========================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -30,35 +20,29 @@ ENV/
 .pytest_cache/
 .coverage
 
-# ==========================================
-# JavaScript / TypeScript / Node.js
-# ==========================================
 node_modules/
 /dist
 /build
 .npm
 *.log
 
-# ==========================================
-# Java / Kotlin
-# ==========================================
 *.class
 /target/
 .gradle/
 /build/
 
-# ==========================================
-# C / C++
-# ==========================================
 *.o
 *.obj
 *.exe
 *.out
 /bin/
 
-# ==========================================
-# Security and Environment
-# ==========================================
 *.env
 *.local
 credentials.json
+
+bin/
+[Bb]in/
+
+obj/
+[Oo]bj/

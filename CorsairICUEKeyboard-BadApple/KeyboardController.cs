@@ -12,16 +12,28 @@ public class KeyboardController
 
   void Init()
   {
-    CorsairDeviceProvider.Instance.Initialize(throwExceptions: true); 
+    try
+    {
+      CorsairDeviceProvider.Instance.Initialize(throwExceptions: true);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine(ex);
+
+      return;
+    }
 
     Thread.Sleep(1500);
 
-    Console.WriteLine(CorsairDeviceProvider.Instance.Devices.Count);
+    Console.WriteLine($"Devices Found = {CorsairDeviceProvider.Instance.Devices.Count}");
 
-    surface.Attach(CorsairDeviceProvider.Instance.Devices); 
+    foreach (var d in CorsairDeviceProvider.Instance.Devices)
+    {
+      Console.WriteLine($"  {d.DeviceInfo.DeviceName} ({d.DeviceInfo.DeviceType})");
+    }
 
-    surface.RegisterUpdateTrigger(new TimerUpdateTrigger()); 
-
+    surface.Attach(CorsairDeviceProvider.Instance.Devices);
+    surface.RegisterUpdateTrigger(new TimerUpdateTrigger());
     surface.AlignDevices();
   }
 
