@@ -1,12 +1,14 @@
-﻿class Program
+﻿using System.Threading.Tasks;
+
+class Program
 {
-  static void Main(string[] args)
+  static async Task Main(string[] args)
   {
-    var input = GetInput();
+    int userInput = GetInput();
 
     KeyboardController keyboardController = new KeyboardController();
 
-    ImageParser imageParser = new ImageParser((input.x, input.y));
+    ImageParser imageParser = new ImageParser((keyboardController.KeyboardWidth, keyboardController.KeyboardHeight));
     
     List<Frame>? frames = imageParser.GetFrames();
 
@@ -15,46 +17,15 @@
       return;
     }
 
-    keyboardController.Start(frames, input.seconds);
+    await keyboardController.Start(frames, userInput);
   }
 
-  static (int x, int y, int seconds) GetInput()
+  static int GetInput()
   {
-    int x = 21;
-    int y = 6;
-    
     int seconds = 209;
 
     while (true)
     {
-      try
-      {
-        Console.WriteLine("Input The Max Width In Keys On Your Keyboard");
-
-        x = Convert.ToInt16(Console.ReadLine());
-      }
-      catch (FormatException)
-      {
-        Console.WriteLine("Must Be An Integer");
-
-        continue;
-      }
-
-      Console.WriteLine();
-
-      try
-      {
-        Console.WriteLine("Input The Max Height In Keys On Your Keyboard");
-        
-        y = Convert.ToInt16(Console.ReadLine());
-      }
-      catch (FormatException)
-      {
-        Console.WriteLine("Must Be An Integer");
-
-        continue;
-      }
-
       try
       {
         Console.WriteLine("Input The Length Of Video In Seconds");
@@ -72,6 +43,6 @@
       break;
     }
 
-    return (x, y, seconds);
+    return seconds;
   }
 }

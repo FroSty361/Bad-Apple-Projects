@@ -1,9 +1,16 @@
+using System.Diagnostics;
+using System.Threading.Tasks;
 using RGB.NET.Core;
 using RGB.NET.Devices.Corsair;
 
 public class KeyboardController
 {
   RGBSurface surface = new RGBSurface();
+
+  private IRGBDevice keyboard = null;
+
+  public int KeyboardWidth { get; private set; }
+  public int KeyboardHeight { get; private set; }
 
   public KeyboardController()
   {
@@ -25,86 +32,106 @@ public class KeyboardController
 
     Thread.Sleep(1500);
 
-    Console.WriteLine($"Devices Found = {CorsairDeviceProvider.Instance.Devices.Count}");
-
-    foreach (var d in CorsairDeviceProvider.Instance.Devices)
-    {
-      Console.WriteLine($"  {d.DeviceInfo.DeviceName} ({d.DeviceInfo.DeviceType})");
-    }
-
     surface.Attach(CorsairDeviceProvider.Instance.Devices);
     surface.RegisterUpdateTrigger(new TimerUpdateTrigger());
     surface.AlignDevices();
+
+    keyboard = GetKeyboard();
+    GetKeyboardData();
   }
 
-  public void Start(List<Frame> frames, int videoLengthSeconds)
+  private IRGBDevice GetKeyboard()
   {
-    Console.WriteLine(surface.Devices.Count);
-
     foreach (var device in surface.Devices)
     {
       if (device.DeviceInfo.DeviceType == RGBDeviceType.Keyboard)
       {
-        DisplayFrames(frames, device, videoLengthSeconds);
-
-        return;
+        return device;
       }
     }
 
-    Console.WriteLine("No Keyboard Was Found");
+    throw new ArgumentNullException("No Keyboard Was Found");
   }
 
-  void DisplayFrames(List<Frame> frames, IRGBDevice keyboard, int videoLengthSeconds)
+  private void GetKeyboardData()
+  {
+    if (keyboard == null)
+    {
+      throw new NullReferenceException("Keyboard Is Null");
+    }
+
+    KeyboardWidth = (int)Math.Ceiling(keyboard.Boundary.Size.Width);
+    KeyboardHeight = (int)Math.Ceiling(keyboard.Boundary.Size.Height);
+
+    Console.WriteLine($"{KeyboardWidth} {KeyboardHeight}");
+  }
+
+  public async Task Start(List<Frame> frames, int videoLengthSeconds)
+  {
+    if (keyboard == null)
+    {
+      throw new NullReferenceException("Can Not Start With No Keyboard");
+    }
+
+    await DisplayFrames(frames, videoLengthSeconds);
+  }
+
+  async Task DisplayFrames(List<Frame> frames, int videoLengthSeconds)
   {
     int framesAmount = frames.Count;
 
-    foreach (Frame frame in frames)
+    if (videoLengthSeconds <= 0 || framesAmount <= 0)
     {
-      DisplayFrame(frame, keyboard);
-
-      surface.Update();
-
-      if (videoLengthSeconds > 0 && framesAmount > 0)
-      {
-        int delay = framesAmount / videoLengthSeconds;
-
-        Thread.Sleep(delay);
-      }
+      throw new ArgumentException("No Video Length In Seconds Or Frames Amount");
     }
-  }
 
-  void DisplayFrame(Frame frame, IRGBDevice keyboard)
-  {
-    int ledAmount = keyboard.Count();
+    double frameDurationSeconds = (double)videoLengthSeconds / framesAmount;
+
+    Stopwatch stopwatch = Stopwatch.StartNew();
+
     int iterations = 0;
 
-    for (int y = 0; y < frame.Height; y++)
+    foreach (Frame frame in frames)
     {
-      for (int x = 0; x < frame.Width; x++)
+      TimeSpan targetTime = TimeSpan.FromSeconds(iterations * frameDurationSeconds);
+
+      while (stopwatch.Elapsed < targetTime)
       {
-        int pixel = frame.Grid[y, x];
+        await Task.Delay(1); 
+      }
 
-        if (iterations >= ledAmount)
-        {
-          Console.WriteLine($"Grid Area To LED Amount Ratio Is Un Even. Iteration Index = {iterations} LED Amount = {ledAmount}");
+      DisplayFrame(frame);
+      surface.Update();
 
-          break;
-        }
+      iterations++;
+    }
 
-        Console.WriteLine("Hi!");
+    stopwatch.Stop();
+  }
 
-        Led led = keyboard.ElementAt(iterations);
+  void DisplayFrame(Frame frame)
+  {
+    foreach (Led led in keyboard)
+    {
+      int x = (int)led.Location.X;
+      int y = (int)led.Location.Y;
 
-        if (pixel == 1)
-        {
-          led.Color = new Color(1.0f, 1.0f, 1.0f); // White
-        }
-        else
-        {
-          led.Color = new Color(0.0f, 0.0f, 0.0f); // Black
-        }
+      Console.WriteLine($"{x} {y}");
 
-        iterations++;
+      if (y >= frame.Height || x >= frame.Width)
+      {
+        break;
+      }
+      
+      int pixel = frame.Grid[y, x];
+
+      if (pixel == 1)
+      {
+        led.Color = new Color(1.0f, 1.0f, 1.0f); // White
+      }
+      else
+      {
+        led.Color = new Color(0.0f, 0.0f, 0.0f); // Black
       }
     }
   }
