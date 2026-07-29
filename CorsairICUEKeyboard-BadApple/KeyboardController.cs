@@ -9,8 +9,10 @@ public class KeyboardController
 
   private IRGBDevice keyboard = null;
 
-  public int KeyboardWidth { get; private set; }
-  public int KeyboardHeight { get; private set; }
+  private int keyboardWidth;
+  private int keyboardHeight;
+
+  ImageParser imageParser = null;
 
   public KeyboardController()
   {
@@ -38,6 +40,8 @@ public class KeyboardController
 
     keyboard = GetKeyboard();
     GetKeyboardData();
+
+    imageParser = new ImageParser((keyboardWidth, keyboardHeight));
   }
 
   private IRGBDevice GetKeyboard()
@@ -60,50 +64,61 @@ public class KeyboardController
       throw new NullReferenceException("Keyboard Is Null");
     }
 
-    KeyboardWidth = (int)Math.Ceiling(keyboard.Boundary.Size.Width);
-    KeyboardHeight = (int)Math.Ceiling(keyboard.Boundary.Size.Height);
-
-    Console.WriteLine($"{KeyboardWidth} {KeyboardHeight}");
+    keyboardWidth = (int)Math.Ceiling(keyboard.Boundary.Size.Width);
+    keyboardHeight = (int)Math.Ceiling(keyboard.Boundary.Size.Height);
   }
 
-  public async Task Start(List<Frame> frames, int videoLengthSeconds)
+  public async Task Start(int videoLengthSeconds)
   {
     if (keyboard == null)
     {
       throw new NullReferenceException("Can Not Start With No Keyboard");
     }
 
-    await DisplayFrames(frames, videoLengthSeconds);
+    if (imageParser == null)
+    {
+      throw new NullReferenceException("Can Not Get Frame Paths Because Image Parser Is Null");
+    }
+
+    string[] framePaths = imageParser.GetFrameImagePaths();
+
+    await DisplayFrames(framePaths, videoLengthSeconds);
   }
 
-  async Task DisplayFrames(List<Frame> frames, int videoLengthSeconds)
+  async Task DisplayFrames(string[] framePaths, int videoLengthSeconds)
   {
-    int framesAmount = frames.Count;
+    int framesAmount = framePaths.Length;
 
     if (videoLengthSeconds <= 0 || framesAmount <= 0)
     {
       throw new ArgumentException("No Video Length In Seconds Or Frames Amount");
     }
 
-    double frameDurationSeconds = (double)videoLengthSeconds / framesAmount;
+    double fps = (double)framesAmount / videoLengthSeconds;
+    double frameDurationSeconds = 1.0 / fps;
 
     Stopwatch stopwatch = Stopwatch.StartNew();
 
-    int iterations = 0;
-
-    foreach (Frame frame in frames)
+    for (int i = 0; i < framesAmount; i++)
     {
-      TimeSpan targetTime = TimeSpan.FromSeconds(iterations * frameDurationSeconds);
+      TimeSpan targetTime = TimeSpan.FromSeconds(i * frameDurationSeconds);
 
-      while (stopwatch.Elapsed < targetTime)
+      if (imageParser == null)
       {
-        await Task.Delay(1); 
+        throw new NullReferenceException("Can Not Create Frame Because Image Parser Is Null");
       }
+
+      Frame frame = imageParser.CreateFrame(framePaths[i]);
 
       DisplayFrame(frame);
       surface.Update();
 
-      iterations++;
+      TimeSpan timeToWait = targetTime - stopwatch.Elapsed;
+
+      if (timeToWait > TimeSpan.Zero)
+      {
+        await Task.Delay(timeToWait);
+      }
     }
 
     stopwatch.Stop();
@@ -115,8 +130,6 @@ public class KeyboardController
     {
       int x = (int)led.Location.X;
       int y = (int)led.Location.Y;
-
-      Console.WriteLine($"{x} {y}");
 
       if (y >= frame.Height || x >= frame.Width)
       {

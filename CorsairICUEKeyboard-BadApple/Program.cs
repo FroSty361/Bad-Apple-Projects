@@ -4,23 +4,14 @@ class Program
 {
   static async Task Main(string[] args)
   {
-    int userInput = GetInput();
+    int userInput = GetUserInput();
 
     KeyboardController keyboardController = new KeyboardController();
 
-    ImageParser imageParser = new ImageParser((keyboardController.KeyboardWidth, keyboardController.KeyboardHeight));
-    
-    List<Frame>? frames = imageParser.GetFrames();
-
-    if (frames == null)
-    {
-      return;
-    }
-
-    await keyboardController.Start(frames, userInput);
+    await keyboardController.Start(userInput);
   }
 
-  static int GetInput()
+  static int GetUserInput()
   {
     int seconds = 209;
 
@@ -30,17 +21,23 @@ class Program
       {
         Console.WriteLine("Input The Length Of Video In Seconds");
         
-        seconds = Convert.ToInt16(Console.ReadLine());
+        int secondsAnswer = Convert.ToInt16(Console.ReadLine());
+
+        if (secondsAnswer <= 0)
+        {
+          Console.WriteLine("Input Must Be More Than 0");
+        }
+        else
+        {
+          seconds = secondsAnswer;
+
+          break;
+        }
       }
       catch (FormatException)
       {
         Console.WriteLine("Must Be An Integer");
-
-        continue;
       }
-
-
-      break;
     }
 
     return seconds;

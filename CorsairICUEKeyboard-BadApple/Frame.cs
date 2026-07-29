@@ -3,6 +3,7 @@ using ImageMagick;
 public class Frame
 {
   public int Width { get; private set; } = 21;
+
   public int Height { get; private set; } = 6;
 
   public int[,] Grid { get; private set; }

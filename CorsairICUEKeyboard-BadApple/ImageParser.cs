@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 using ImageMagick;
 
 public class ImageParser
@@ -14,41 +14,38 @@ public class ImageParser
     height = dimensions.y;
   }
 
-  public List<Frame>? GetFrames(string framesPath = "frames")
+  public string[] GetFrameImagePaths(string framesPath = "frames")
   {
-    List<Frame> frames = new List<Frame>();
-    string[] imageNames = [];
+    string[] frameImagePaths = [];
 
     string path = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\", framesPath));
 
     try
     {
-      imageNames = Directory.GetFiles(path);
+      frameImagePaths = Directory.GetFiles(path);
+
+      return frameImagePaths;
     }
     catch (IOException)
     {
-      Console.WriteLine($"Could Not Find The Path {path}");
-
-      return null;
+      throw new IOException($"Could Not Find The Path {path}");
     }
+  }
 
-    foreach (string imageName in imageNames)
+  public Frame CreateFrame(string path)
+  {
+    Frame frame;
+
+    using (MagickImage image = new MagickImage(path))
     {
-      using (MagickImage image = new MagickImage($"{framesPath}/{imageName}"))
-      {
-        var size = new MagickGeometry((uint)width, (uint)height);
-        size.IgnoreAspectRatio = true;
-        image.Resize(size);
+      var size = new MagickGeometry((uint)width, (uint)height);
+      size.IgnoreAspectRatio = true;
+      image.Resize(size);
 
-        Frame frame = new Frame((width, height));
-        frame.ParsePixels(image);
-
-        frames.Add(frame);
-
-        Console.WriteLine(frames.Count());
-      }
+      frame = new Frame((width, height));
+      frame.ParsePixels(image);
     }
 
-    return frames;
+    return frame;
   }
 }
