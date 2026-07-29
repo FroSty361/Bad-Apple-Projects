@@ -40,7 +40,7 @@ public class ImageParser
     {
       var size = new MagickGeometry((uint)width, (uint)height);
       size.IgnoreAspectRatio = true;
-      image.Resize(size);
+      // image.Resize(size);
 
       frame = new Frame((width, height));
       frame.ParsePixels(image);

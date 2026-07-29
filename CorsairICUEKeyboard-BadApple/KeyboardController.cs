@@ -118,10 +118,11 @@ public class KeyboardController
         throw new NullReferenceException("Can Not Create Frame Because Image Parser Is Null");
       }
 
-      Frame frame = imageParser.CreateFrame(framePaths[i]);
-
-      DisplayFrame(frame);
-      surface.Update();
+      using (Frame frame = imageParser.CreateFrame(framePaths[i]))
+      {
+        DisplayFrame(frame);
+        surface.Update();
+      }
 
       TimeSpan timeToWait = targetTime - stopwatch.Elapsed;
 
@@ -141,7 +142,7 @@ public class KeyboardController
       int x = (int)led.Location.X;
       int y = (int)led.Location.Y;
 
-      if (y >= frame.Height || x >= frame.Width)
+      if (y >= (uint)keyboardHeight || x >= (uint)keyboardWidth)
       {
         break;
       }
