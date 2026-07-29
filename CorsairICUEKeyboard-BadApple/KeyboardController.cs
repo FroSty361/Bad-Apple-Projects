@@ -68,7 +68,7 @@ public class KeyboardController
     keyboardHeight = (int)Math.Ceiling(keyboard.Boundary.Size.Height);
   }
 
-  public async Task Start(int videoLengthSeconds)
+  public async Task Start((int seconds, bool loop) userInput, CancellationToken cancelToken = default)
   {
     if (keyboard == null)
     {
@@ -82,7 +82,17 @@ public class KeyboardController
 
     string[] framePaths = imageParser.GetFrameImagePaths();
 
-    await DisplayFrames(framePaths, videoLengthSeconds);
+    if (userInput.loop == true)
+    {
+      while (!cancelToken.IsCancellationRequested)
+      {
+        await DisplayFrames(framePaths, userInput.seconds);
+      }
+    }
+    else
+    {
+      await DisplayFrames(framePaths, userInput.seconds);
+    }
   }
 
   async Task DisplayFrames(string[] framePaths, int videoLengthSeconds)

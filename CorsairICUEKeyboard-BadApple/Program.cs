@@ -4,16 +4,17 @@ class Program
 {
   static async Task Main(string[] args)
   {
-    int userInput = GetUserInput();
+    var userInput = GetUserInput();
 
     KeyboardController keyboardController = new KeyboardController();
 
     await keyboardController.Start(userInput);
   }
 
-  static int GetUserInput()
+  static (int seconds, bool loop) GetUserInput()
   {
     int seconds = 209;
+    bool loop = false;
 
     while (true)
     {
@@ -40,6 +41,25 @@ class Program
       }
     }
 
-    return seconds;
+    while (true)
+    {
+      Console.WriteLine("Loop Video? {y} Or {n}");
+      string loopAnswer = Console.ReadLine().ToLower();
+
+      if (loopAnswer == "y")
+      {
+        loop = true;
+
+        break;
+      }
+      else if (loopAnswer == "n")
+      {
+        loop = false;
+
+        break;
+      }
+    }
+
+    return (seconds, loop);
   }
 }
