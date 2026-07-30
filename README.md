@@ -49,6 +49,8 @@ This is not limited to animation though; many people have also made their own re
 
 [Python Source Code](./GarticPhone-BadApple)
 
+<img src="GarticPhone-BadApple/preview.png" alt="Gartic Phone Preview" width="500">
+
 # Audio Projects
 
 Note audio projects yet. Sorry!
