@@ -1,4 +1,4 @@
-## Bad Apple!! Projects
+# Bad Apple!! Projects
 
 <hr>
 
@@ -7,11 +7,11 @@ A repository containing all of my Bad Apple!! projects
 Table Of Contents
 =================
 
-* [Bad Apple!!](#Bad-Apple!!)
+* [Bad Apple!!](#Bad Apple!!)
 * [Visual Projects](#Visual-Projects)
 * [Audio Projects](#Audio-Projects)
 
-# Bad Apple!!
+## Bad Apple!!
 
 Bad Apple!! is a popular PV made by fans of [Touhou](https://en.touhouwiki.net/wiki/Touhou_Wiki). The song is an arrangement of Lotus Land Story stage 3 theme from Touhou.
 The song itself was released by Alstroemeria Records as part of their Lovelight album in 2007. Although official Touhou music made by the game's creator, ZUN, has no lyrics, Alstroemeria Records added 
@@ -39,18 +39,22 @@ This is not limited to animation though; many people have also made their own re
 * [Touhou Wiki](https://en.touhouwiki.net/wiki/Bad_Apple!!)
 * [Touhou Subreddit](https://www.reddit.com/r/touhou/wiki/memes/badapple/)
 
-# Visual Projects
+## Visual Projects
 
-## Bad Apple!! but on Keyboard
+### Bad Apple!! but on Keyboard
 
 [C# Source Code](./CorsairICUEKeyboard-BadApple)
 
-## Bad Apple!! but in Gartic Phone
+### Bad Apple!! but in Gartic Phone
 
 [Python Source Code](./GarticPhone-BadApple)
 
 <img src="GarticPhone-BadApple/preview.png" alt="Gartic Phone Preview" width="500">
 
-# Audio Projects
+## Audio Projects
 
 Note audio projects yet. Sorry!
+
+## Stats
+
+![Bad-Apple-Projects](http://counter.valgul.moe/@Bad-Apple-Projects?name=Bad-Apple-Projects&theme=booru-jaypee&padding=7&offset=0&align=bottom&scale=1&pixelated=1&darkmode=auto)
