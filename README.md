@@ -7,7 +7,7 @@ A repository containing all of my Bad Apple!! projects
 Table Of Contents
 =================
 
-* [Bad Apple!!](#Bad Apple!!)
+* [Bad Apple!!](#Bad-Apple!!)
 * [Visual Projects](#Visual-Projects)
 * [Audio Projects](#Audio-Projects)
 
@@ -53,7 +53,7 @@ This is not limited to animation though; many people have also made their own re
 
 ## Audio Projects
 
-Note audio projects yet. Sorry!
+No audio projects yet. Sorry!
 
 ## Stats
 
