@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-class Program
+﻿class Program
 {
   static async Task Main(string[] args)
   {
