@@ -10,6 +10,7 @@ Table Of Contents
 * [Bad Apple!!](#Bad-Apple!!)
 * [Visual Projects](#Visual-Projects)
 * [Audio Projects](#Audio-Projects)
+* [Stats](#Stats)
 
 ## Bad Apple!!
 
